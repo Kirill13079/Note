@@ -1,8 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Note.App">
-    <Application.Resources>
+<prism:PrismApplication  xmlns:prism="http://prismlibrary.com" 
+                         xmlns="http://xamarin.com/schemas/2014/forms"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                         xmlns:converters="clr-namespace:Note.Converts" 
+                         xmlns:styles="clr-namespace:Note.Styles"
+                         x:Class="Note.App">
+    <prism:PrismApplication.Resources>
+        <ResourceDictionary>
+            <converters:IconConverter x:Key="IconConverter"/>
 
-    </Application.Resources>
-</Application>
+            <ResourceDictionary.MergedDictionaries>
+                <styles:Theme></styles:Theme>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>

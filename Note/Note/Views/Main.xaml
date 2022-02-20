@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
+             xmlns:fragments="clr-namespace:Note.Views.Fragments"
+             x:Class="Note.Views.Main"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            RowDefinitions="Auto, Auto, Auto, Auto, Auto, *">
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="Auto, *, Auto"
+                RowDefinitions="Auto, Auto"
+                RowSpacing="0"
+                Margin="10, 10, 10, 0">
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="Блокнот"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                    FontSize="{StaticResource Headline2FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Margin="5, 0, 5, 0">
+                </Label>
+                <Label
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="&#xf142;"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    VerticalOptions="Center"
+                    Margin="0, 0, 10, 0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MoreCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+            <StackLayout
+                Grid.Row="4"
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                Margin="15, 5, 15, 0">
+                <Label
+                    Style="{StaticResource Subtitle1_MulishBlack}"
+                    Text="Записи"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"></Label>
+            </StackLayout>
+            <StackLayout
+                Grid.Row="5"
+                xct:StateLayout.CurrentState="{Binding NotesListState}"
+                Padding="5, 0">
+                <xct:StateLayout.StateViews>
+                    <xct:StateView 
+                        StateKey="Loading"
+                        VerticalOptions="FillAndExpand">
+                        <fragments:Loading></fragments:Loading>
+                    </xct:StateView>
+                    <xct:StateView 
+                        StateKey="Empty"
+                        VerticalOptions="FillAndExpand">
+                        <fragments:Emptiness></fragments:Emptiness>
+                    </xct:StateView>
+                </xct:StateLayout.StateViews>
+                <CollectionView
+                    x:Name="NoteItems"
+                    ItemsSource="{Binding NotesList}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <StackLayout.GestureRecognizers>
+                                    <DropGestureRecognizer
+                                        AllowDrop="True"
+                                        DragLeaveCommand="{Binding BindingContext.ItemDragLeave, Source={x:Reference NoteItems}}"
+                                        DragLeaveCommandParameter="{Binding}"
+                                        DragOverCommand="{Binding BindingContext.ItemDraggedOver, Source={x:Reference NoteItems}}"
+                                        DragOverCommandParameter="{Binding}"
+                                        Drop="DropGestureRecognizer_Drop_Collection"
+                                        DropCommand="{Binding BindingContext.ItemDropped, Source={x:Reference NoteItems}}"
+                                        DropCommandParameter="{Binding}" />
+                                </StackLayout.GestureRecognizers>
+                                <Grid
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                                    HeightRequest="2"
+                                    Margin="0, 5, 0, 0"
+                                    IsVisible="{Binding isBeingDraggedOver}" />
+                                <SwipeView
+                                    IsEnabled="True"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItemView
+                                                Command="{Binding BindingContext.DeleteNoteCommand, Source={x:Reference NoteItems}}"
+                                                CommandParameter="{Binding}">
+                                                <Frame
+                                                    BackgroundColor="Transparent"
+                                                    Padding="15, 0">
+                                                    <Label
+                                                        Text="&#xf2ed;"
+                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                        FontSize="{StaticResource Headline4FontSize}"
+                                                        FontFamily="FontAwesome_Solid"
+                                                        VerticalTextAlignment="Center">
+                                                    </Label>
+                                                </Frame>
+                                            </SwipeItemView>
+                                            <SwipeItemView 
+                                                Command="{Binding BindingContext.EditTaskCommand, Source={x:Reference NoteItems}}"
+                                                CommandParameter="{Binding}">
+                                                <Frame
+                                                    BackgroundColor="Transparent"
+                                                    Padding="25, 0, 15, 0">
+                                                    <Label
+                                                        Text="&#xf303;"
+                                                        TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                        FontSize="{StaticResource Headline4FontSize}"
+                                                        FontFamily="FontAwesome_Solid"
+                                                        VerticalTextAlignment="Center">
+                                                    </Label>
+                                                </Frame>
+                                            </SwipeItemView>
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame
+                                        Padding="10"
+                                        Margin="10, 5"
+                                        CornerRadius="20"
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource LightCardBackgroundColor}, Dark={StaticResource DarkCardBackgroundColor}}"
+                                        HasShadow="False"
+                                        BorderColor="{AppThemeBinding Light={StaticResource LightCardBorderColor}, Dark={StaticResource DarkCardBorderColor}}">
+                                        <Frame.GestureRecognizers>
+                                            <DragGestureRecognizer
+                                                CanDrag="True"
+                                                DragStarting="DragGestureRecognizer_DragStarting_Collection"
+                                                DragStartingCommand="{Binding BindingContext.ItemDragged, Source={x:Reference NoteItems}}"
+                                                DragStartingCommandParameter="{Binding}" />
+                                            <TapGestureRecognizer Command="{Binding BindingContext.CheckTaskCommand, Source={x:Reference NoteItems}}" CommandParameter="{Binding}"></TapGestureRecognizer>
+                                        </Frame.GestureRecognizers>
+                                        <Grid
+                                            ColumnDefinitions="Auto, Auto"
+                                            RowDefinitions="Auto, Auto"
+                                            RowSpacing="0">
+                                            <Label 
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Text="{Binding Title}"
+                                                FontFamily="Mulish_ExtraBold"
+                                                FontSize="{StaticResource Body2FontSize}"
+                                                Margin="10, 0"
+                                                VerticalOptions="Center"
+                                                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                                            </Label>
+                                            <Label 
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Text="{Binding Content}"
+                                                FontFamily="Mulish_Regular"
+                                                FontSize="{StaticResource Body1FontSize}"
+                                                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                                                Margin="10, 0"
+                                                VerticalOptions="CenterAndExpand">
+                                            </Label>
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <Frame 
+                Grid.Row="5" 
+                BackgroundColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                VerticalOptions="End" 
+                HorizontalOptions="End" 
+                CornerRadius="20" 
+                TranslationY="-20" 
+                TranslationX="-20"
+                Padding="20"
+                xct:TouchEffect.NativeAnimation="True">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddCommand}"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <Label
+                    Text="&#xf067;"
+                    FontSize="{StaticResource Headline3FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonTextColor}, Dark={StaticResource DarkButtonTextColor}}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"></Label>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
