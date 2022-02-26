@@ -100,7 +100,7 @@ namespace Note.Services
         {
             return text?
                 .Length >= 23
-                ? $"{text?.Trim().Replace("\n", " ").Substring(0, 20)}..."
+                ? $"{text?.Trim().Replace("\n", " ").Substring(0, 17)}..."
                 : text;
         }
     }

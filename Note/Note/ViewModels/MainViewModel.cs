@@ -29,7 +29,7 @@ namespace Note.ViewModels
         public ObservableCollection<NoteModel> NotesList { get; set; } = new ObservableCollection<NoteModel>();
         public bool isEnableButton { get; set; } = true;
 
-        public ICommand OnSwitchLanguageCommand { get; }
+        public ICommand OnSwitchSettingCommand { get; }
 
         public ICommand OnDeleteNoteCommand { get; }
         public ICommand OnEditNoteCommand { get; }
@@ -48,7 +48,7 @@ namespace Note.ViewModels
 
             _language = LanguageHelper.GetCurrentLanguage();
 
-            OnSwitchLanguageCommand = new Command(async() => await OpenSettingListDialog());
+            OnSwitchSettingCommand = new Command(async() => await OpenSettingListDialog());
 
             OnDeleteNoteCommand = new Command<NoteModel>(DeleteNote);
             OnEditNoteCommand = new Command<NoteModel>(async(note) => await EditNote(note));
