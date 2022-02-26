@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Note.Base
+namespace Note.Bases
 {
     public class BaseModel : INotifyPropertyChanged
     {

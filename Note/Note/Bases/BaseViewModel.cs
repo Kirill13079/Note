@@ -1,10 +1,10 @@
 ﻿using Prism.AppModel;
 using Prism.Navigation;
 using System.ComponentModel;
+using Xamarin.CommunityToolkit.Helpers;
 using Xamarin.CommunityToolkit.UI.Views;
-using Xamarin.Essentials;
 
-namespace Note.Base
+namespace Note.Bases
 {
     public class BaseViewModel :
         INavigationAware,
@@ -12,52 +12,28 @@ namespace Note.Base
         INotifyPropertyChanged,
         IDestructible
     {
-        #region Private & Protected
 
         protected INavigationService _navigationService { get; set; }
-
-        #endregion
-
-        #region Properties
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Title { get; set; }
         public LayoutState MainState { get; set; }
-        public bool HasNoInternetConnection { get; set; }
-
-        #endregion
-
-        #region Constructor
 
         public BaseViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            Connectivity.ConnectivityChanged += ConnectivityChanged;
-            HasNoInternetConnection = !Connectivity.NetworkAccess.Equals(NetworkAccess.Internet);
         }
 
-        #endregion
-
-        #region
-
-        protected async void BackCommandH()
+        protected async void BackCommand()
         {
-            await _navigationService.GoBackAsync();
+            await _navigationService.GoBackAsync(null);
         }
 
-        #endregion
-
-        #region Internet Connection
-
-        private void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        protected async void BackCommand(INavigationParameters parameters)
         {
-            HasNoInternetConnection = !e.NetworkAccess.Equals(NetworkAccess.Internet);
+            await _navigationService.GoBackAsync(parameters);
         }
-
-        #endregion
-
-        #region INavigationAware
 
         public virtual void OnNavigatingTo(INavigationParameters parameters) { }
 
@@ -65,20 +41,10 @@ namespace Note.Base
 
         public virtual void OnNavigatedFrom(INavigationParameters parameters) { }
 
-        #endregion
-
-        #region IPageLifecycleAware
-
         public virtual void OnAppearing() { }
 
         public virtual void OnDisappearing() { }
 
-        #endregion
-
-        #region IDestructible
-
         public virtual void Destroy() { }
-
-        #endregion
     }
 }

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Note.Views.AddNoteView"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
+            RowDefinitions="Auto, Auto, *, Auto"
+            Padding="20, 20, 20, 0">
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="Auto, *, Auto"
+                RowDefinitions="Auto, Auto"
+                RowSpacing="0"
+                Margin="0, 0, 0, 10">
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="&#xf060;"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Padding="0,0,20,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnBackCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Text="{xct:Translate Save}"
+                    TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                    FontSize="{StaticResource Headline4FontSize}"
+                    FontFamily="FontAwesome_Solid"
+                    VerticalOptions="Center"
+                    Margin="0, 0, 10, 0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnSaveCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+            <ContentView Grid.Row="2">
+                <Grid RowDefinitions="*, Auto">
+                    <StackLayout Grid.Row="0">
+                        <StackLayout Spacing="5">
+                            <Entry Placeholder="{xct:Translate Header}" 
+                                   Text="{Binding TitleNote}" 
+                                   FontSize="25" 
+                                   FontAttributes="Bold" 
+                                   WidthRequest="300" 
+                                   PlaceholderColor="{AppThemeBinding Light={StaticResource LightPlaceholderTextColor}, Dark={StaticResource DarkPlaceholderTextColor}}"
+                                   TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                            </Entry>
+                        </StackLayout>
+                        <ScrollView>
+                            <Editor Placeholder="{xct:Translate BodyNote}" 
+                                    Text="{Binding ContentNote}" 
+                                    FontSize="20" 
+                                    AutoSize="TextChanges" 
+                                    Keyboard="Plain" 
+                                    PlaceholderColor="{AppThemeBinding Light={StaticResource LightPlaceholderTextColor}, Dark={StaticResource DarkPlaceholderTextColor}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
+                            </Editor>
+                        </ScrollView>
+                    </StackLayout>
+                </Grid>
+            </ContentView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

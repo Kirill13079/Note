@@ -11,48 +11,71 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resourse\Fonts\FontAwesome-Regular.ttf" />
-    <None Remove="Resourse\Fonts\FontAwesome-Solid.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-Black.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-Bold.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-ExtraBold.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-ExtraLight.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-Light.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-Medium.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-Regular.ttf" />
-    <None Remove="Resourse\Fonts\Mulish-SemiBold.ttf" />
+    <None Remove="Resources\Fonts\FontAwesome-Regular.ttf" />
+    <None Remove="Resources\Fonts\FontAwesome-Solid.ttf" />
+    <None Remove="Resources\Fonts\Mulish-Black.ttf" />
+    <None Remove="Resources\Fonts\Mulish-Bold.ttf" />
+    <None Remove="Resources\Fonts\Mulish-ExtraBold.ttf" />
+    <None Remove="Resources\Fonts\Mulish-ExtraLight.ttf" />
+    <None Remove="Resources\Fonts\Mulish-Light.ttf" />
+    <None Remove="Resources\Fonts\Mulish-Medium.ttf" />
+    <None Remove="Resources\Fonts\Mulish-Regular.ttf" />
+    <None Remove="Resources\Fonts\Mulish-SemiBold.ttf" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resourse\Fonts\FontAwesome-Regular.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\FontAwesome-Solid.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-Black.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-Bold.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-ExtraBold.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-ExtraLight.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-Light.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-Medium.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-Regular.ttf" />
-    <EmbeddedResource Include="Resourse\Fonts\Mulish-SemiBold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FontAwesome-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\FontAwesome-Solid.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-Black.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-ExtraBold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-ExtraLight.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-Light.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Mulish-SemiBold.ttf" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="5.0.11" />
+    <PackageReference Include="Fody" Version="6.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
     <PackageReference Include="Prism.Forms" Version="8.1.97" />
     <PackageReference Include="Prism.Forms.Regions" Version="8.1.97" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\More.xaml.cs">
-      <DependentUpon>More.xaml</DependentUpon>
+    <Compile Update="Resources\Language\AppResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AddNoteView.xaml.cs">
+      <DependentUpon>AddNoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Dialogs\SettingListDialog.xaml.cs">
+      <DependentUpon>SettingListDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\EditNoteView.xaml.cs">
+      <DependentUpon>EditNoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Language\AppResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Styles\Colors.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -62,16 +85,22 @@
     <EmbeddedResource Update="Styles\Theme.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddNoteView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Dialogs\SettingListDialog.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\EditNoteView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Fragments\Emptiness.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Fragments\Loading.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Main.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\More.xaml">
+    <EmbeddedResource Update="Views\MainView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

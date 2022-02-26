@@ -143,7 +143,7 @@
     <Style x:Key="Base_Button" TargetType="Button">
         <Setter Property="CornerRadius" Value="30" />
         <Setter Property="FontFamily" Value="Mulish_ExtraBold" />
-        <Setter Property="Padding" Value="20" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="FontSize" Value="{StaticResource ButtonFontSize}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>

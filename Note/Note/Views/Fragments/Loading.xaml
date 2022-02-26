@@ -9,7 +9,7 @@
             Color="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
             IsRunning="True"/>
     <Label 
-            Text="Loading..." 
+            Text="Загрузка..." 
             TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor}, Dark={StaticResource DarkSecondaryTextColor}}"
             Style="{StaticResource Body1_MulishSemiBold}"
             HorizontalOptions="Center"/>

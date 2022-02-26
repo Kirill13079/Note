@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Note.Views.Dialogs.SettingListDialog"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:prism="http://prismlibrary.com"
+             prism:DialogLayout.RelativeWidthRequest=".85"
+             CornerRadius="24"
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightCardUnselectedBackgroundColor}, Dark={StaticResource DarkCardUnselectedBackgroundColor}}">
+    <prism:DialogLayout.Mask>
+        <StackLayout BackgroundColor="{AppThemeBinding Light={StaticResource LightTransparentBackgroundColor}, Dark={StaticResource DarkTransparentBackgroundColor}}"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"></StackLayout>
+    </prism:DialogLayout.Mask>
+    <StackLayout>
+        <Label
+            Style="{StaticResource Headline4_MulishBlack}"
+            Text="{xct:Translate ChooseLanguage}"
+            Margin="10, 0, 0, 0"/>
+        <CollectionView
+            ItemsSource="{Binding LanguageList}"
+            SelectedItem="{Binding SelectedLanguageList}"
+            SelectionChangedCommand="{Binding ChangeSelectLanguageListCommand}"
+            SelectionMode="Single"
+            HeightRequest="80">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal" />
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                        <Setter TargetName="ListLanguageName" Property="Label.FontFamily" Value="Mulish_Bold" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Label
+                            x:Name="ListLanguageName"
+                            Style="{StaticResource Body1_MulishRegular}"
+                            Text="{Binding Name}"
+                            Margin="10, 5, 0, 5"
+                            HorizontalTextAlignment="Center">
+                        </Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label
+            Style="{StaticResource Headline4_MulishBlack}"
+            Text="{xct:Translate Theme}"
+            Margin="10, 0, 0, 0"/>
+
+        <Label
+            Text="{AppThemeBinding Light=&#xf186;, Dark=&#xf185;}"
+            TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+            FontSize="{StaticResource Headline4FontSize}"
+            FontFamily="FontAwesome_Solid"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            Margin="0, 0, 0, 0"
+            Padding="30,0,30,0">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OnSwitchThemeCommand}"></TapGestureRecognizer>
+            </Label.GestureRecognizers>
+        </Label>
+
+        <Button
+                BackgroundColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
+                Command="{Binding CloseDialogCommand}"
+                Grid.Row="3"
+                Margin="0, 20, 0, 0"
+                Text="{xct:Translate Close}"
+                VerticalOptions="End"
+                Style="{StaticResource Base_Button}"></Button>
+
+    </StackLayout>
+</Frame>

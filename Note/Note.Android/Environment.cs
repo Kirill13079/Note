@@ -1,4 +1,5 @@
 ﻿using Android.OS;
+using Note.Interfaces;
 using Xamarin.Essentials;
 
 namespace Note.Droid

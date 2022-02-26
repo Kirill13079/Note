@@ -3,12 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
              xmlns:fragments="clr-namespace:Note.Views.Fragments"
-             x:Class="Note.Views.Main"
+             x:Class="Note.Views.MainView"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <Grid
             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"
-            RowDefinitions="Auto, Auto, Auto, Auto, Auto, *">
+            RowDefinitions="Auto, Auto, Auto, Auto, Auto, *"
+            xct:StateLayout.CurrentState="{Binding MainState}">
+            <xct:StateLayout.StateViews>
+                <xct:StateView 
+                    StateKey="Loading"
+                    VerticalOptions="FillAndExpand">
+                    <fragments:Loading></fragments:Loading>
+                </xct:StateView>
+            </xct:StateLayout.StateViews>
             <Grid
                 Grid.Row="1"
                 ColumnDefinitions="Auto, *, Auto"
@@ -19,7 +27,7 @@
                     Grid.Column="0"
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Text="Блокнот"
+                    Text="{xct:Translate Note}"
                     TextColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
                     FontSize="{StaticResource Headline2FontSize}"
                     FontFamily="FontAwesome_Solid"
@@ -36,9 +44,11 @@
                     FontSize="{StaticResource Headline4FontSize}"
                     FontFamily="FontAwesome_Solid"
                     VerticalOptions="Center"
-                    Margin="0, 0, 10, 0">
+                    HorizontalOptions="End"
+                    Margin="0, 0, 20, 0"
+                    Padding="30,0,0,0">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding MoreCommand}"></TapGestureRecognizer>
+                        <TapGestureRecognizer Command="{Binding OnSwitchLanguageCommand}"></TapGestureRecognizer>
                     </Label.GestureRecognizers>
                 </Label>
             </Grid>
@@ -49,7 +59,7 @@
                 Margin="15, 5, 15, 0">
                 <Label
                     Style="{StaticResource Subtitle1_MulishBlack}"
-                    Text="Записи"
+                    Text="{xct:Translate MainSubTitle}"
                     TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"></Label>
             </StackLayout>
             <StackLayout
@@ -77,26 +87,26 @@
                                 <StackLayout.GestureRecognizers>
                                     <DropGestureRecognizer
                                         AllowDrop="True"
-                                        DragLeaveCommand="{Binding BindingContext.ItemDragLeave, Source={x:Reference NoteItems}}"
+                                        DragLeaveCommand="{Binding BindingContext.OnItemDragLeave, Source={x:Reference NoteItems}}"
                                         DragLeaveCommandParameter="{Binding}"
-                                        DragOverCommand="{Binding BindingContext.ItemDraggedOver, Source={x:Reference NoteItems}}"
+                                        DragOverCommand="{Binding BindingContext.OnItemDraggedOver, Source={x:Reference NoteItems}}"
                                         DragOverCommandParameter="{Binding}"
                                         Drop="DropGestureRecognizer_Drop_Collection"
-                                        DropCommand="{Binding BindingContext.ItemDropped, Source={x:Reference NoteItems}}"
+                                        DropCommand="{Binding BindingContext.OnItemDropped, Source={x:Reference NoteItems}}"
                                         DropCommandParameter="{Binding}" />
                                 </StackLayout.GestureRecognizers>
                                 <Grid
                                     BackgroundColor="{AppThemeBinding Light={StaticResource LightButtonColor}, Dark={StaticResource DarkButtonColor}}"
                                     HeightRequest="2"
                                     Margin="0, 5, 0, 0"
-                                    IsVisible="{Binding isBeingDraggedOver}" />
+                                    IsVisible="{Binding isDraggedOver}" />
                                 <SwipeView
                                     IsEnabled="True"
                                     BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
                                     <SwipeView.RightItems>
                                         <SwipeItems>
                                             <SwipeItemView
-                                                Command="{Binding BindingContext.DeleteNoteCommand, Source={x:Reference NoteItems}}"
+                                                Command="{Binding BindingContext.OnDeleteNoteCommand, Source={x:Reference NoteItems}}"
                                                 CommandParameter="{Binding}">
                                                 <Frame
                                                     BackgroundColor="Transparent"
@@ -111,7 +121,7 @@
                                                 </Frame>
                                             </SwipeItemView>
                                             <SwipeItemView 
-                                                Command="{Binding BindingContext.EditTaskCommand, Source={x:Reference NoteItems}}"
+                                                Command="{Binding BindingContext.OnEditNoteCommand, Source={x:Reference NoteItems}}"
                                                 CommandParameter="{Binding}">
                                                 <Frame
                                                     BackgroundColor="Transparent"
@@ -138,9 +148,8 @@
                                             <DragGestureRecognizer
                                                 CanDrag="True"
                                                 DragStarting="DragGestureRecognizer_DragStarting_Collection"
-                                                DragStartingCommand="{Binding BindingContext.ItemDragged, Source={x:Reference NoteItems}}"
+                                                DragStartingCommand="{Binding BindingContext.OnItemDragged, Source={x:Reference NoteItems}}"
                                                 DragStartingCommandParameter="{Binding}" />
-                                            <TapGestureRecognizer Command="{Binding BindingContext.CheckTaskCommand, Source={x:Reference NoteItems}}" CommandParameter="{Binding}"></TapGestureRecognizer>
                                         </Frame.GestureRecognizers>
                                         <Grid
                                             ColumnDefinitions="Auto, Auto"
@@ -149,7 +158,7 @@
                                             <Label 
                                                 Grid.Row="0"
                                                 Grid.Column="1"
-                                                Text="{Binding Title}"
+                                                Text="{Binding SubTitle}"
                                                 FontFamily="Mulish_ExtraBold"
                                                 FontSize="{StaticResource Body2FontSize}"
                                                 Margin="10, 0"
@@ -157,9 +166,20 @@
                                                 TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}">
                                             </Label>
                                             <Label 
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                Text="{Binding Timestamp}"
+                                                FontFamily="Mulish_Regular"
+                                                FontSize="{StaticResource Body1FontSize}"
+                                                Margin="10, 0"
+                                                VerticalOptions="Center"
+                                                HorizontalTextAlignment="End"
+                                                TextColor="{AppThemeBinding Light={StaticResource LightPlaceholderTextColor}, Dark={StaticResource DarkPlaceholderTextColor}}">
+                                            </Label>
+                                            <Label 
                                                 Grid.Row="1"
                                                 Grid.Column="1"
-                                                Text="{Binding Content}"
+                                                Text="{Binding SubContent}"
                                                 FontFamily="Mulish_Regular"
                                                 FontSize="{StaticResource Body1FontSize}"
                                                 TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor}, Dark={StaticResource DarkPrimaryTextColor}}"
@@ -183,9 +203,11 @@
                 TranslationY="-20" 
                 TranslationX="-20"
                 Padding="20"
+                IsEnabled="{Binding isEnableButton}"
                 xct:TouchEffect.NativeAnimation="True">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding AddCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Command="{Binding OnCreateNoteCommand}" 
+                                          Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
                 </Frame.GestureRecognizers>
                 <Label
                     Text="&#xf067;"

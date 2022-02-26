@@ -1,10 +1,14 @@
-﻿using Note.Services;
+﻿using Note.Helpers;
+using Note.Resources.Language;
+using Note.Services;
 using Note.ViewModels;
+using Note.ViewModels.Dialogs;
 using Note.Views;
+using Note.Views.Dialogs;
 using Prism;
 using Prism.DryIoc;
 using Prism.Ioc;
-using Xamarin.Essentials;
+using Xamarin.CommunityToolkit.Helpers;
 using Xamarin.Forms;
 
 [assembly: ExportFont("FontAwesome-Regular.ttf", Alias = "FontAwesome_Regular")]
@@ -25,28 +29,34 @@ namespace Note
     {
         public App() : this(null) { }
 
-        public App(IPlatformInitializer initializer) : base(initializer)
-        { }
+        public App(IPlatformInitializer initializer) : base(initializer){ }
 
         public new static App Current => Application.Current as App;
 
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            SetAppTheme();
 
-            await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(Main)}");
+            LocalizationResourceManager.Current.PropertyChanged += Current_PropertyChanged;
+            LocalizationResourceManager.Current.Init(AppResource.ResourceManager);
+
+            ThemeHelper.SetTheme();
+
+            await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainView)}");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterRegionServices();
 
-            containerRegistry.Register<IRepository, Repository>();
+            containerRegistry.Register<IRepositoryService, RepositoryService>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>("NavigationPage");
-            containerRegistry.RegisterForNavigation<Main, MainViewModels>("Main");
-            containerRegistry.RegisterForNavigation<More, MoreViewModels>("More");
+            containerRegistry.RegisterForNavigation<MainView, MainViewModel>("MainView");
+            containerRegistry.RegisterForNavigation<AddNoteView, AddNoteViewModel>("AddNoteView");
+            containerRegistry.RegisterForNavigation<EditNoteView, EditNoteViewModel>("EditNoteView");
+
+            containerRegistry.RegisterDialog<SettingListDialog, SettingListDialogViewModel>();
         }
 
         protected override void OnStart()
@@ -61,20 +71,9 @@ namespace Note
         {
         }
 
-        private void SetAppTheme()
+        private void Current_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var theme = Preferences.Get("theme", string.Empty);
-            var environment = DependencyService.Get<IEnvironment>();
-            if (string.IsNullOrEmpty(theme) || theme == "light")
-            {
-                environment?.SetStatusBarColor(Color.FromHex("F2F2F2"), true);
-                Application.Current.UserAppTheme = OSAppTheme.Light;
-            }
-            else
-            {
-                environment?.SetStatusBarColor(Color.FromHex("080808"), false);
-                Application.Current.UserAppTheme = OSAppTheme.Dark;
-            }
+            AppResource.Culture = LocalizationResourceManager.Current.CurrentCulture;
         }
     }
 }

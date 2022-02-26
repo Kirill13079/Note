@@ -8,7 +8,6 @@
     <prism:PrismApplication.Resources>
         <ResourceDictionary>
             <converters:IconConverter x:Key="IconConverter"/>
-
             <ResourceDictionary.MergedDictionaries>
                 <styles:Theme></styles:Theme>
             </ResourceDictionary.MergedDictionaries>
